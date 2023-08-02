@@ -1,21 +1,30 @@
 import os
 
-def list_files(folder_path):
+def list_files_and_folders(folder_path):
     files = []
+    folders = []
+    status = "none"
     try:
-        # Get files on PATH, and write (Folder) on the folders
-        for file in os.listdir(folder_path+"/"):
-            if os.path.isdir(folder_path+"/"+file):
-                file=file+" (Folder)"
-            files.append(file)
+        # Get files and folders on PATH
+        #for file_or_folder in os.listdir(folder_path+"/"):
+        #    if os.path.isdir(folder_path+"/"+file_or_folder):
+        #        folders.append(file_or_folder)
+
+        items = os.listdir(folder_path+"/")
+
+        files = [item for item in items if not os.path.isdir(folder_path+"/"+item)]
+        folders = [item for item in items if os.path.isdir(folder_path+"/"+item)]
 
         # Return the list of files
-        return files
+        status = "ok"
+        return status,files,folders
 
     except FileNotFoundError:
-        return f"Folder not found: {folder_path}"
+        status = "not-found"
+        return status,files,folders
     except PermissionError:
-        return f"Permission denied: {folder_path}"
+        status = "denied"
+        return status,files,folders
 
 def go_back(folder_path):
     return os.path.dirname(folder_path)

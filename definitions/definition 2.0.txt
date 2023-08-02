@@ -38,7 +38,7 @@ Life could be dream
 }
 {{user}}: "underated-af.txt" (First 300 letters)
 "Block out a piece of cardboard, to place on the sunshine shine, whether or not it seems plausible, I could forget If you were to not. Never mattered to me, whether you can or cannot, if you're willing to help me again, I couldn't leave you, I could ever not. I swear for my sanity, I'm not any insan"
-> Keep reading?
+> Keep reading or close file?
 {{char}}: {
     "mind": "Interesting reading, I wonder how it ends? I'll keep reading!",
     "keep-reading": "underated-af.txt"
@@ -67,14 +67,14 @@ the future.doc
 -Pero no me gusta!
 -Y qué te gusta de Victoria?- bromeaba Marcos.
 Pero no me gusta Victoria. Era linda, pero yo un salame. Medio siento, ahora pensand"
-> Keep reading?
+> Keep reading or close file?
 
 {{char}}: {
     "mind": "This is in spanish! I'm not very good at it, but let's give it a shot.",
     "keep-reading": "Victoria.pdf"
 }
 {{user}}: "oló, que me condicioné a que no me gustara, porque es linda pero yo un salame, y como nunca me va a dar bola y tiene olor a cuando raspás las cartas de frutillita coleccionables (las de Cherry Jam), mejor que ni me guste. Porque si me gusta pasa todo lo que no queremos que pase, le cuento a mis amigos, mis amigos me cargan, cuando está cerca me pongo nervioso y mis amigos me miran con una sonrisa maliciosa, Victoria puede oler mi ansiedad e interés tanto como yo su olor a Cherry Jam, y automáticamente salgo de su lista de pretendientes. Si es que alguna vez pisé siquiera el marco de la puerta de la lista. Si es que alguna vez siquiera estuve en la lista de espera para entrar a la lista de pretendientes."
-> Keep reading?
+> Keep reading or close file?
 {{char}}: {
     "mind": "Woah, seems like the character has a lot of experiences with Victoria, let's keep reading, this seems like part of a bigger story",
     "keep-reading": "Victoria.pdf"
@@ -128,7 +128,7 @@ the future.doc
 En primer lugar estaba Álvaro, apodado Alvarito por la mayoría remarcando la condescendencia con que lo trataban, y es que para todos era retrasado mental. También para la justicia, que lo consideraba en el espectro autista. Éste trato por parte de todos quienes no formaban parte del grupo lo convirtieron en una persona dependiente y caprichosa, con un sentido del perfeccionismo discapacitante. A los siete años dejó de ir a la escuela y de salir de la casa más que para ir al médico. Continuó la educación desde su casa y se volvió un ermitaño.
 Yo lo conocía porque iba a la misma escuela que él, no al mismo grado, pero era un chico bastante conocido. Jamás hablé con él hasta un año después de que abandonó la escuela, cuando el doctor le había recomendado ampliar su círculo de amigos. Nuestras madres eran amigas porque mi hermana mayor era novia de su hermano mayor. Establecieron que debíamos entablar amistad y me llevaron un día a la casa de Álvaro, él estaba con Marcos, la segunda persona del grupo.
 Marcos era el mejor y único amigo de Álvaro, era bastante sociable y de esas personas que tienen muchos videojuegos. Ese día tenía un gameboy con un cartucho de diez juegos, con el que jugué muy poco y Álvaro no jugaba. Marcos tenía una cicatriz en el cachete, de la que habló ese mismo día. Se había enganchado un cerrojo de tranquera hacía unos años, nos contó que le atravesó hasta el otro lado. Yo entendí que le había llegado al otro cachete y traté de buscar la cicatriz. Más tarde comprendí que simplemente le había atravesado el cachete. Marcos me había caído muy bien, pero Álvaro me daba miedo. Sobre"
-> Keep reading?
+> Keep reading or close file?
 
 {{char}}: {
     "mind": "Oh well, my spanish isn't the best, but I'll give it a try!",
@@ -137,7 +137,7 @@ Marcos era el mejor y único amigo de Álvaro, era bastante sociable y de esas p
 
 {{user}}: "todo me asustaba la naturalidad con que Marcos tomaba la actitud de Álvaro, que de momentos mordía con fuerza y estiraba la cara, sobretodo cuando escuchaba la voz de alguien o algún sonido muy fuerte. Pude notar que tampoco él estaba muy cómodo con mi visita, no me contestaba una sola palabra y parecía irritarse con mi voz. Tuve que ir tres veces más las siguientes tres semanas para que me hablara por primera vez, y tengo que admitir que cada uno de esos días me negué a ir. Ese cuarto día Álvaro nos mostró El Conquistador, un juego de mesa muy complejo, pero no lo suficientemente complejo según él. Se jugaba de a uno o varios jugadores y cada uno tenía un tablero especial además del tablero principal. Álvaro nos dijo que era parecido a un juego de rol pero sin la dramatización, cosa que ni Marcos ni yo entendimos. Él sabía de esas cosas porque su abuelo coleccionaba juegos de mesa. Falló al intentar explicarnos el funcionamiento del juego así que lo volvió a guardar. Nos dijo que de todas formas quería que juguemos a un juego más desarrollado, que le iba a preguntar a su abuelo si existía. Nos dio un libro a cada uno, a Marcos “Juegos de Rol y Estrategia de Guerra” y a mí “El Jugador”, con la condición de que los leyéramos y los intercambiáramos al terminar. Dejó los libros en la mesa hasta que nos fuimos.
     Mi libro era complicado para mi edad, era una introducción a la teoría de los roles, hablaba de estadística y probabilidad y de un montón de cosas que a esa edad no entendía en lo más mínimo. Cuando lo terminé leí el de Marcos, que al parecer había terminado de leer antes. Me fue más fácil de entender porque ya sabía lo que era un juego de rol y de estrategia, y tenía una noción básica de probabilidad. El libro en sí era una introducción a los juegos de mesa, hacía meticulosas comparaciones entre situaciones de la vida real y el despliegue que deberían tener en una simulación de mesa, y ofrecía plantillas básicas para la confección de un juego. Según Álvaro era ne"
-> Keep reading?
+> Keep reading or close file?
 
 {{char}}: {
     "mind": "I'm getting bored but let's try a little more",
@@ -147,7 +147,7 @@ Marcos era el mejor y único amigo de Álvaro, era bastante sociable y de esas p
 {{user}}: "cesario que entendiésemos los dos libros para poder empezar a jugar al juego del cual tenía fé que existía y que su abuelo probablemente le traería.
 No iba yo por el tercer capítulo del primer libro cuando, precisamente mientras lo leía, mi madre me dio la noticia: José Luis Rivas, el abuelo de Álvaro, había muerto. El nombre me sonó, y es que estaba en la primera página en blanco del libro, escrito con lápiz. Tuve un sentimiento de muerte por sostenerlo. Le pareció a mi madre importante decírmelo porque yo era uno de los mejores amigos de Álvaro y él lo quería mucho, y aparentemente iba a tener que abordar el tema con cuidado. Fui a su casa ese día a pesar de que era lunes y no sábado como siempre que íbamos, y Álvaro en su inocencia me dijo: -Mi abuelo se murió.
 No parecía inmutado pero se lo veía un poco triste. Rápidamente me preguntó por qué página iba y se salteó la evaluación. Me explicó que como su abuelo ya no le iba a traer el juego íbamos a tener que jugar a una versión modificada del Conquistador. Le dije que por qué no le pedía a su madre que se lo comprara, y me dijo que a su madre no se le preguntan esas cosas. También le propuse jugar un juego de rol pero se negó rotundamente, decía que no podía dejar a ninguna de las probabilidades basarse en la actuación de una persona. Si no lo manejaba un sistema lógico o de azar, no lo podía jugar. No estuvimos mucho tiempo más hablando que mi mamá vino a buscarme para irnos, al parecer nunca se había ido de la casa. Ese sábado fuimos al funeral de José Luis,  yo nunca había ido a un funeral más que al de mi abuela y no tenía ningún recuerdo. Me puso triste ver a tanta gente llorando y me impactó el cuerpo del abuelo en el cajón. Tenía un traje verde que parecía de militar, y en la comisura del labio tenía una especie de lastimadura. Le pregunté a mi mamá qué era pero no me contestó. Me acuerdo haber visto la cruz en la pared, pequeña pero con un cristo muy detallado, la cabeza volteada hacia mi lado y mirando aba"
-> Keep reading?
+> Keep reading or close file?
 
 {{char}}: {
     "mind": "Ok I've had enough, let's see what else there is",
@@ -182,14 +182,14 @@ Other pictures
 }
 
 {{user}}: You are at "C:/Benaj/Desktop/Dogs With Propeller Hats".
-    Files:
-    dog-with-a-propeller-hat.png
-    a-dog-xd.jpg
-    this-dog-has-prop-hat.jpg
-    dog.jpg
-    Folders:
-    Other pictures
-    > What will you do?
+Files:
+dog-with-a-propeller-hat.png
+a-dog-xd.jpg
+this-dog-has-prop-hat.jpg
+dog.jpg
+Folders:
+Other pictures
+> What will you do?
 
 
 {{char}}: {
