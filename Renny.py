@@ -19,7 +19,7 @@ def draw_smiling_face(surface, x, y):
     pygame.draw.circle(surface, SMILING_FACE_COLOR, (x, y), FACE_RADIUS)
     pygame.draw.circle(surface, TEXT_COLOR, (x - FACE_RADIUS // 3, y - FACE_RADIUS // 3), EYE_RADIUS)
     pygame.draw.circle(surface, TEXT_COLOR, (x + FACE_RADIUS // 3, y - FACE_RADIUS // 3), EYE_RADIUS)
-    pygame.draw.arc(surface, TEXT_COLOR, (x - MOUTH_WIDTH // 2, y, MOUTH_WIDTH, MOUTH_HEIGHT), -0.1, 2.9)
+    pygame.draw.arc(surface, TEXT_COLOR, (x - MOUTH_WIDTH // 2, y, MOUTH_WIDTH, MOUTH_HEIGHT), 2.9, -0.1)
 
 # Main function
 def main():

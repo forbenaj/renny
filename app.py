@@ -12,9 +12,11 @@ def perform(action,file):
     if action == "write-journal":
         print("He wants to write on his journal")
 
-path="C:/Users/Admin/Desktop/renny"
+path="G:/Benja 2010"
 
 status,files,folders = list_files_and_folders(path)
+
+msg = ""
 
 if status == "ok":
 
