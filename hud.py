@@ -1,10 +1,4 @@
 import tkinter as tk
-import pygame
-
-
-def toggle_fullscreen(event):
-    # Toggle fullscreen mode
-    root.attributes('-fullscreen', not root.attributes('-fullscreen'))
 
 def close_app(event):
     # Close the application
@@ -16,38 +10,48 @@ def send_message():
     label.config(text="Message: " + text)
 
 
-# Create the main application window
-root = tk.Tk()
-root.title("Fullscreen App")
+def append_message():
+    msg = text_entry.get()
+    new_msg_sent = tk.Frame()
+    new_msg_sent.pack(side="top")
+    new_label = tk.Label(new_msg_sent, text=msg)
+    new_label.pack(side="left")
 
-# Bind the F11 key to toggle fullscreen mode
-root.bind("<F11>", toggle_fullscreen)
-
-# Bind the Escape key to close the application
-root.bind("<Escape>", close_app)
-
-# Set fullscreen mode initially to False
-root.attributes('-fullscreen', False)
 
 # Create the message window
-msg = tk.Tk()
-msg.title("Communicator")
+root = tk.Tk()
+root.title("Communicator")
 
 
-# Create a text entry field
-text_entry = tk.Entry(msg)
-text_entry.pack(pady=5)
+root.geometry("400x500")
+
+'''raiz = tk.Tk()
+mi_Frame = tk.Frame() #Creacion del Frame
+mi_Frame.pack()  #Empaquetamiento del Frame
+mi_Frame.config(bg="blue") #cambiar color de fondo 
+mi_Frame.config(width="400", height="200") #cambiar tamaño
+mi_Frame.config(bd=24) #cambiar el grosor del borde
+mi_Frame.config(relief="sunken")   #cambiar el tipo de borde
+mi_Frame.config(cursor="heart")    #cambiar el tipo de cursor 
+raiz.mainloop()'''
+
+chat_messages = tk.Frame()
+chat_messages.pack()
+
+message_box = tk.Frame()
+message_box.pack(side="bottom",pady=20)
 
 # Create a label to display the entered text
-label = tk.Label(msg, text="")
+label = tk.Label(message_box, text="")
 label.pack()
 
+# Create a text entry field
+text_entry = tk.Entry(message_box)
+text_entry.pack(side="left",pady=5)
+
 # Create a button to update the label with entered text
-update_button = tk.Button(msg, text="Update Text", command=send_message)
-update_button.pack()
-
-msg.geometry("300x100")
-
+update_button = tk.Button(message_box, text="Send", command=append_message)
+update_button.pack(side="left",pady=5)
 
 # Start the main loop
-msg.mainloop()
+root.mainloop()

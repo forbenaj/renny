@@ -67,6 +67,6 @@ def read_txt(txt_file,i):
 
     result = text[i:i+1000]
 
-    return result
+    return result,i
 
 #print(read_txt("C:/Benaj/Desktop/The Stigma.txt",0))

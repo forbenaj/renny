@@ -32,3 +32,6 @@ def go_back(folder_path):
 # Replace 'folder_path_here' with the actual path of the folder you want to list files from.
 #folder_path_here = "C:\Benaj\Desktop"
 #list_files_in_folder(folder_path_here)
+
+def extension(file_path):
+    return os.path.splitext(file_path)[1]
