@@ -12,10 +12,17 @@ def send_message():
 
 def append_message():
     msg = text_entry.get()
-    new_msg_sent = tk.Frame()
-    new_msg_sent.pack(side="top")
-    new_label = tk.Label(new_msg_sent, text=msg)
-    new_label.pack(side="left")
+    #new_msg_sent = tk.Frame()
+    #new_msg_sent.pack(side="top")
+    new_label = tk.Label(chat_messages, text=msg)
+    new_label.grid(column=0)
+
+def appond_message():
+    msg = text_entry.get()
+    #new_msg_sent = tk.Frame()
+    #new_msg_sent.pack(side="top")
+    new_label = tk.Label(chat_messages, text=msg)
+    new_label.grid(column=1)
 
 
 # Create the message window
@@ -50,8 +57,11 @@ text_entry = tk.Entry(message_box)
 text_entry.pack(side="left",pady=5)
 
 # Create a button to update the label with entered text
-update_button = tk.Button(message_box, text="Send", command=append_message)
-update_button.pack(side="left",pady=5)
+send_button = tk.Button(message_box, text="Send", command=append_message)
+send_button.pack(side="left",pady=5)
+
+receive_button = tk.Button(message_box, text="Receive", command=appond_message)
+receive_button.pack(side="left",pady=5)
 
 # Start the main loop
 root.mainloop()
