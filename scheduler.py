@@ -1,20 +1,42 @@
-from apscheduler.schedulers.blocking import BlockingScheduler
+import threading
+import time
+import pystray
+from PIL import Image
 
-def your_task():
-    # Replace this function with the task you want to run every 5 minutes
-    print("This task runs every 1 minute!")
+index = 0
+
+def doSomething():
+    while True:
+        print("Doing something...")
+        time.sleep(1)
+
+def on_exit(icon, item):
+    print("Closing application")
+    icon.stop()
+
+def communicator():
+    print("Communicator opened")
+
+def find():
+    print("Opening folder")
+
+def setup_system_tray():
+    # Create a thread for the daemon task
+    daemon_thread = threading.Thread(target=doSomething)
+    daemon_thread.daemon = True
+    daemon_thread.start()
+
+
+    # Define the image to be shown in the system tray
+    image = Image.open("icon.png")  # Replace with the path to your icon image
+
+    # Create the system tray icon
+    menu = pystray.Menu(pystray.MenuItem("Chat", communicator),
+                        pystray.MenuItem("Find", find),
+                        pystray.Menu.SEPARATOR,
+                        pystray.MenuItem("Exit", on_exit))
+    icon = pystray.Icon("Renny", image, "Renny", menu)
+    icon.run()
 
 if __name__ == "__main__":
-    # Create an instance of the scheduler
-    scheduler = BlockingScheduler()
-
-    # Schedule the task to run every 1 minute
-    scheduler.add_job(your_task, 'interval', minutes=1)
-
-    try:
-        # Start the scheduler
-        print("Script is running. Press Ctrl+C to exit.")
-        scheduler.start()
-    except KeyboardInterrupt:
-        # Catch Ctrl+C and stop the scheduler gracefully
-        print("Scheduler stopped.")
+    setup_system_tray()

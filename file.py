@@ -67,6 +67,16 @@ def read_txt(txt_file,i):
 
     result = text[i:i+1000]
 
-    return result,i
+    return result
 
 #print(read_txt("C:/Benaj/Desktop/The Stigma.txt",0))
+
+def extension(filename):
+    # Split the filename by '.' to get the parts
+    parts = filename.split('.')
+    if len(parts) > 1:
+        # Return the last part, which is the file extension
+        return parts[-1].lower()
+    else:
+        # If there is no extension, return an empty string
+        return ""
