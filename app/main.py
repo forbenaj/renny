@@ -1,5 +1,5 @@
 import os
-import chatbox
+import chatbox as chatbox
 
 def killRenny():
     try:

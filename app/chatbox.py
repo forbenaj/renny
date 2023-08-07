@@ -1,5 +1,5 @@
 import tkinter as tk
-from wids import Scroller
+from utils.wids import Scroller
 
 class cb:
 

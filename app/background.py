@@ -5,10 +5,10 @@ from PIL import Image
 
 index = 0
 
-def doSomething():
+def doSomething(t):
     while True:
         print("Doing something...")
-        time.sleep(1)
+        time.sleep(t)
 
 def on_exit(icon, item):
     print("Closing application")
@@ -20,9 +20,9 @@ def communicator():
 def find():
     print("Opening folder")
 
-def setup_system_tray():
+def setup_system_tray(t):
     # Create a thread for the daemon task
-    daemon_thread = threading.Thread(target=doSomething)
+    daemon_thread = threading.Thread(target=doSomething,args=(t,))
     daemon_thread.daemon = True
     daemon_thread.start()
 
@@ -39,4 +39,4 @@ def setup_system_tray():
     icon.run()
 
 if __name__ == "__main__":
-    setup_system_tray()
+    setup_system_tray(1)
