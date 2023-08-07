@@ -1,6 +1,6 @@
 from api import chat
-from folder import list_files_and_folders,go_back,extension
-from file import read_pdf_text,read_docx_text,read_txt
+from utils.folder import list_files_and_folders,go_back,extension
+from utils.file import read_pdf_text,read_docx_text,read_txt
 import json
 
 

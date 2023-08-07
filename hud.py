@@ -1,5 +1,5 @@
 import tkinter as tk
-from scrollable_frame import Scroller
+from wids import Scroller
 
 class Comunicator:
     def __init__(self,root):
