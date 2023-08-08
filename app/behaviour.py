@@ -7,7 +7,7 @@ class Console():
         self.root=root
         root.geometry("600x500")
 
-        self.text =  tk.Text(self.root,state=tk.DISABLED,bg="black",fg="#EAFFAE")
+        self.text =  tk.Text(self.root,state=tk.DISABLED,bg=self.bg,fg=self.fg)
 
         self.scrollbar = tk.Scrollbar(self.text,command=self.text.yview)
         self.text.config(yscrollcommand=self.scrollbar.set)
@@ -25,7 +25,8 @@ class Console():
         self.text.yview_moveto(1.0)
 
     def colors(self,bg="black",fg="white"):
-        print(True==True)
+        self.bg=bg
+        self.fg=fg
 
 
 if __name__ == "__main__":

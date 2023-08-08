@@ -1,5 +1,9 @@
 import os
-import chatbox as chatbox
+import app.chatbox as chatbox
+
+# Dear sir, I would like to complain about that last tutorial about people not writing unit tests.
+# I myself have coded all my life without testing 
+# and... have... never... once... AAHHHH! [ImportError: attempted relative import with no known parent package]
 
 def killRenny():
     try:
