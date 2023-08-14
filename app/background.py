@@ -28,7 +28,7 @@ def setup_system_tray(t):
 
 
     # Define the image to be shown in the system tray
-    image = Image.open("icon.png")  # Replace with the path to your icon image
+    image = Image.open("images/icon.png")  # Replace with the path to your icon image
 
     # Create the system tray icon
     menu = pystray.Menu(pystray.MenuItem("Chat", communicator),

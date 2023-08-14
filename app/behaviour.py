@@ -5,10 +5,15 @@ class Console:
     def __init__(self,root,bg="black",fg="white"):
 
         self.root=root
-        root.geometry("600x500")
+        self.root.geometry("600x500")
+
+        self.root.title("Renny's behaviour")
 
         self.bg = bg
         self.fg = fg
+
+        self.header = tk.Label(self.root, text="Watch Renny's behaviour")
+        self.header.pack()
 
         self.text =  tk.Text(self.root,state=tk.DISABLED,bg=self.bg,fg=self.fg)
 

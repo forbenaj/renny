@@ -1,14 +1,23 @@
 import os
 import app.chatbox as chatbox
+import app.treeview as treeview
+import app.background as background
+import tkinter as tk
 
 # Dear sir, I would like to complain about that last tutorial about people not writing unit tests.
 # I myself have coded all my life without testing 
 # and... have... never... once... AAHHHH! [ImportError: attempted relative import with no known parent package]
 
 desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+root = tk.Tk()
 
 def firstTime():
-    pass
+
+    #root = tk.Tk()
+    selectPath = treeview.tv(root,releaseRenny)
+    root.mainloop()
+    
+
 
 def save_config():
     config_data = {
@@ -47,14 +56,20 @@ def main(path):
     with open('runn.ing', 'w') as file:
         file.write('Renny is running.')
 
+
     # Start the main loop
-    root = chatbox.tk.Tk()
+    #root = tk.Tk()
     app = chatbox.cb(root)
     root.mainloop()
 
 
     print("File created successfully.")
     
+
+def releaseRenny(path):
+    root.destroy()
+    print(f"Renny is released at {path}")
+    background.setup_system_tray(10)
 
 
 if __name__ == "__main__":

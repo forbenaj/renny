@@ -15,14 +15,12 @@ import win32api
 
 class tv(ttk.Frame):
     
-    def __init__(self, main_window,callback):
+    def __init__(self, main_window):
         super().__init__(main_window)
 
         main_window.title("Select a folder")
         #main_window.title("Explorador de archivos y carpetas")
         
-        self.callback = callback
-
         self.header = ttk.Label(self, text="Select a folder to release Renny!")
         self.header.pack()
 
@@ -44,8 +42,8 @@ class tv(ttk.Frame):
         # su correspondiente archivo o carpeta.
         self.fsobjects = {}
         
-        self.file_image = tk.PhotoImage(file="images/file.png")
-        self.folder_image = tk.PhotoImage(file="images/folder.png")
+        self.file_image = tk.PhotoImage(file="file.png")
+        self.folder_image = tk.PhotoImage(file="folder.png")
         
 
         # Load local drives
@@ -56,7 +54,7 @@ class tv(ttk.Frame):
         #self.load_tree(abspath(sep))
         
         # Añadir el botón
-        self.print_button = ttk.Button(self, text="Release Renny", command=self.submit_path)
+        self.print_button = ttk.Button(self, text="Release Renny", command=self.releaseRenny)
         self.print_button.pack()
     
     def listdir(self, path):
@@ -91,11 +89,10 @@ class tv(ttk.Frame):
         """
         for fsobj in self.listdir(path):
             fullpath = join(path, fsobj)
+            child = self.insert_item(fsobj, fullpath, parent)
             if isdir(fullpath):
-                child = self.insert_item(fsobj, fullpath, parent)
                 for sub_fsobj in self.listdir(fullpath):
-                    if isdir(join(fullpath,sub_fsobj)):
-                        self.insert_item(sub_fsobj, join(fullpath, sub_fsobj), child)
+                    self.insert_item(sub_fsobj, join(fullpath, sub_fsobj), child)
         self.config(cursor="arrow")
 
         
@@ -106,11 +103,11 @@ class tv(ttk.Frame):
         drive_list = drives.split('\000')[:-1]  # Remove the last empty string
 
         for drive in drive_list:
-            if isdir(drive):
-                child = self.insert_item(drive, drive, parent)
-                for sub_fsobj in self.listdir(drive):
-                    if isdir(join(drive,sub_fsobj)):
-                        self.insert_item(sub_fsobj, join(drive, sub_fsobj), child)
+            fullpath = drive
+            child = self.insert_item(drive, drive, parent)
+            if isdir(fullpath):
+                for sub_fsobj in self.listdir(fullpath):
+                    self.insert_item(sub_fsobj, join(fullpath, sub_fsobj), child)
 
     def load_subitems(self, iid):
         """
@@ -130,17 +127,16 @@ class tv(ttk.Frame):
         self.load_subitems(iid)
 
     
-    def submit_path(self):
+    def releaseRenny(self):
         
-        try:
-            selected_item = self.treeview.selection()[0]
-            selected_path = self.fsobjects[selected_item]
-            messagebox.showinfo("Renny is free!",f"Renny released at:\n{selected_path}")
-            self.callback(selected_path)
-        except IndexError:
-            messagebox.showwarning("Directory error","Select a correct path")
+        selected_item = self.treeview.selection()[0]
+        selected_path = self.fsobjects[selected_item]
+        print("Renny released at:", selected_path)
+        messagebox.showinfo("Renny is free!",f"Renny released at:\n{selected_path}")
+        return selected_path
+
 
 if __name__ == "__main__":
     main_window = tk.Tk()
-    app = tv(main_window,print("test"))
+    app = tv(main_window)
     app.mainloop()
