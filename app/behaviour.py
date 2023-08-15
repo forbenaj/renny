@@ -23,14 +23,29 @@ class Console:
         self.scrollbar.pack(side="right", fill="y")
         self.text.pack(side="top",fill="both",expand=True)
 
-        #test button
-        tk.Button(self.root,text="test",command=self.testAddText).pack(side="top")
+        self.force_button = tk.Button(self.root,text="Force interaction",command=self.interact)
+        self.force_button.pack(side="top")
 
+        tk.Button(self.root,text="Retrieve History",command=self.checkHistory).pack()
+
+    def checkHistory(self):
+        
+        try:
+            with open("history.txt", "r") as history:
+                print(history)
+        except FileNotFoundError:
+            print("Not found")
 
     def testAddText(self):
         self.text.config(state=tk.NORMAL)
         self.text.insert(tk.END,"Add test text\n")
         self.text.yview_moveto(1.0)
+
+    def interact(self):
+        self.text.config(state=tk.NORMAL)
+        self.text.insert(tk.END,"Add test text\n")
+        self.text.yview_moveto(1.0)
+
 
     def colors(self,bg="black",fg="white"):
         self.bg=bg

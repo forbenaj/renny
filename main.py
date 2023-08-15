@@ -1,7 +1,7 @@
 import os
 import app.chatbox as chatbox
 import app.treeview as treeview
-import app.background as background
+from app.renny import RennyTheLittleGuy
 import tkinter as tk
 
 # Dear sir, I would like to complain about that last tutorial about people not writing unit tests.
@@ -69,7 +69,8 @@ def main(path):
 def releaseRenny(path):
     root.destroy()
     print(f"Renny is released at {path}")
-    background.setup_system_tray(10)
+    Renny = RennyTheLittleGuy(path)
+    Renny.setup_system_tray(2)
 
 
 if __name__ == "__main__":

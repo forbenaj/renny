@@ -1,15 +1,72 @@
-from api import chat
-from utils.folder import list_files_and_folders,go_back,extension
-from utils.file import read_pdf_text,read_docx_text,read_txt
+from app.api import chat
+from app.utils.folder import list_files_and_folders,go_back,extension
+from app.utils.file import read_pdf_text,read_docx_text,read_txt
 import json
+import threading
+import time
+import pystray
+from PIL import Image
 
-class Renny:
-    def __init__(self, path, index):
 
-        self.index = index
-        self.path=path
+class RennyTheLittleGuy:
+    def __init__(self, path):
+
+        self.path = path
 
         self.text_types = [".txt",".pdf",".docx"]
+
+        self.running = True
+
+
+
+    def setup_system_tray(self,t):
+        # Create a thread for the daemon task
+        daemon_thread = threading.Thread(target=self.scheduledActivity, args=(t,))
+        daemon_thread.daemon = True
+        daemon_thread.start()
+
+        # Define the image to be shown in the system tray
+        image = Image.open("images/icon.png")  # Replace with the path to your icon image
+
+        # Create the system tray icon
+        menu = pystray.Menu(pystray.MenuItem("Chat", self.communicator),
+                            pystray.MenuItem("Find", self.find),
+                            pystray.MenuItem("See activity", self.see_activity),
+                            pystray.Menu.SEPARATOR,
+                            pystray.MenuItem("Running", self.toggle_running,checked=lambda item:self.running),
+                            pystray.MenuItem("Exit", self.on_exit))
+        icon = pystray.Icon("Renny", image, "Renny", menu)
+        icon.run()
+
+
+
+    def scheduledActivity(self,t):
+        while True:
+            if self.running:
+                print("Doing something...")
+            time.sleep(t)
+
+
+    def toggle_running(self,icon, item):
+        self.running = not self.running
+
+
+    def on_exit(self,icon, item):
+        print("Closing application")
+        icon.stop()
+
+    def communicator(self):
+        print("Communicator opened")
+
+    def find(self):
+        print("Opening folder")
+
+    def see_activity(self):
+        print("Behaviour opened")
+
+
+
+    def sendInfo(self):
 
         status,files,folders = list_files_and_folders(self.path)
 
@@ -49,9 +106,8 @@ class Renny:
 
         print(self.mind)
 
-        self.perform(self.action,self.file,self.index)
-
-
+        #self.perform(self.action,self.file,self.index)
+        
     def perform(self,action,file,i):
         if action == "stand-by":
             print("He wants to stand-by at "+self.path)
@@ -73,4 +129,5 @@ class Renny:
             print("He wants to write on his journal")
 
 if __name__ == "__main__":
-    Renny("G:/Benja 2010",0)
+    Renny = RennyTheLittleGuy("G:/Benja 2010")
+    Renny.setup_system_tray(10)
