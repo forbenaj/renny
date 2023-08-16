@@ -41,8 +41,8 @@ class Background:
                 menu.append(pystray.MenuItem(label,func))
 
         # Create the system tray icon
-        icon = pystray.Icon("Renny", image, "Renny", menu)
-        icon.run()
+        self.icon = pystray.Icon("Renny", image, "Renny", menu)
+        self.icon.run()
 
 
 

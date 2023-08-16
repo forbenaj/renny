@@ -14,10 +14,11 @@ import time
 
 class Renny:
 
-    def __init__(self):
+    def __init__(self,root):
 
         self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-        self.root = tk.Tk()
+        self.root = root
+        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.running=True
         self.path = self.load_config()
 
@@ -52,7 +53,7 @@ class Renny:
         self.root.mainloop()
         
     def releaseRenny(self, path):
-        self.root.destroy()
+        self.root.withdraw()
         print(f"Renny is released at {path}")
 
         #Renny = RennyTheLittleGuy(path)
@@ -88,10 +89,16 @@ class Renny:
         print("Opening folder")
 
     def see_activity(self):
+        self.background.icon.stop()
         print("Behaviour opened")
-        #root = tk.Tk()
-        #console = Console(self.root)
-        self.root.mainloop()
+        self.root = tk.Tk()
+        console = Console(self.root)
+        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
+        self.root.after(0, self.root.deiconify)
+
+    def withdraw_window(self):
+        self.root.withdraw()
+        self.background.setup_system_tray(self.items)
 
 '''    def save_config(self):
         config_data = {
@@ -136,5 +143,6 @@ class Renny:
 
 
 if __name__ == "__main__":
-    renny = Renny()
+    root = tk.Tk()
+    renny = Renny(root)
     renny.run()
