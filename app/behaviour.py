@@ -31,7 +31,7 @@ class Console:
     def checkHistory(self):
         
         try:
-            with open("history.txt", "r") as history:
+            with open("history.json", "r") as history:
                 print(history)
         except FileNotFoundError:
             print("Not found")

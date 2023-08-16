@@ -1,49 +1,59 @@
 import threading
 import time
 import pystray
+import tkinter as tk
+from app.behaviour import Console
 from PIL import Image
 
-index = 0
-paused = False  # Flag to control the thread's execution
+class Background:
+    
+    def __init__(self, path):
 
-def doSomething(t):
-    while True:
-        if not paused:
-            print("Doing something...")
-        time.sleep(t)
+        self.path = path
 
-def toggle_pause(icon, item):
-    global paused
-    paused = not paused
-    #item.text = "Unpause" if paused else "Pause"
+        #self.root = tk.Tk()
 
-def on_exit(icon, item):
-    print("Closing application")
-    icon.stop()
+        self.text_types = [".txt",".pdf",".docx"]
 
-def communicator():
-    print("Communicator opened")
+        self.running = True
 
-def find():
-    print("Opening folder")
 
-def setup_system_tray(t):
-    # Create a thread for the daemon task
-    daemon_thread = threading.Thread(target=doSomething, args=(t,))
-    daemon_thread.daemon = True
-    daemon_thread.start()
+    def setup_daemon_thread(self, t, activity):
+        # Create a thread for the daemon task
+        daemon_thread = threading.Thread(target=activity, args=(t,))
+        daemon_thread.daemon = True
+        daemon_thread.start()
 
-    # Define the image to be shown in the system tray
-    image = Image.open("images/icon.png")  # Replace with the path to your icon image
 
-    # Create the system tray icon
-    menu = pystray.Menu(pystray.MenuItem("Chat", communicator),
-                        pystray.MenuItem("Find", find),
-                        pystray.MenuItem("Pause", toggle_pause),
-                        pystray.Menu.SEPARATOR,
-                        pystray.MenuItem("Exit", on_exit))
-    icon = pystray.Icon("Renny", image, "Renny", menu)
-    icon.run()
+    def setup_system_tray(self,items):
+
+        # Define the image to be shown in the system tray
+        image = Image.open("images/icon.png")  # Replace with the path to your icon image
+
+        menu = []
+
+        for label, func, checkable in items:
+            if label == "SEPARATOR":
+                menu.append(pystray.Menu.SEPARATOR)
+            elif checkable:
+                menu.append(pystray.MenuItem(label,func,checked=lambda item:self.running))
+            else:
+                menu.append(pystray.MenuItem(label,func))
+
+        # Create the system tray icon
+        icon = pystray.Icon("Renny", image, "Renny", menu)
+        icon.run()
+
+
+
+    def scheduledActivity(self,t):
+        while True:
+            if self.running:
+                print("Doing something...")
+            time.sleep(t)
+
 
 if __name__ == "__main__":
-    setup_system_tray(1)
+    root = tk.Tk()
+    background = Background("G:/Benja 2010")
+    background.setup_system_tray([])
