@@ -1,7 +1,7 @@
 import tkinter as tk
 from app.utils.wids import Scroller
 
-class cb(tk.Frame):
+class Chatbox(tk.Frame):
 
     def __init__(self,root):
         super().__init__(root)
@@ -55,6 +55,6 @@ class cb(tk.Frame):
 if __name__ == "__main__":
     # Start the main loop
     root = tk.Tk()
-    app = cb(root)
+    app = Chatbox(root)
     root.mainloop()
     print("start!")

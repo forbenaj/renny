@@ -1,9 +1,9 @@
 import os
-import app.chatbox as chatbox
 import app.treeview as treeview
 from app.renny import RennyTheLittleGuy
 from app.background import Background
 from app.behaviour import Console
+from app.chatbox import Chatbox
 import tkinter as tk
 import time
 
@@ -23,12 +23,13 @@ class Renny:
         self.path = self.load_config()
         self.currentWindow = ""
 
-        self.items = [("Chat", self.communicator, None),
-                      ("Find", self.find, None),
-                      ("See activity", self.see_activity, None),
-                      ("SEPARATOR",None, None),
-                      ("Running", self.toggle_running,True),
-                      ("Exit", self.on_exit, None)]
+        self.items = [("Open communicator", self.communicator, False, True),
+                      ("Find", self.find, False, False),
+                      ("See activity", self.see_activity, False, False),
+                      ("SEPARATOR",None, False, False),
+                      ("Running", self.toggle_running,True, False),
+                      ("Exit", self.on_exit, False, False)]
+        
 
     def load_config(self):
         try:
@@ -64,7 +65,7 @@ class Renny:
 
         self.background = Background(path)
 
-        self.background.setup_daemon_thread(0.1,self.scheduledActivity)
+        self.background.setup_daemon_thread(1,self.scheduledActivity)
         self.background.setup_system_tray(self.items)
 
 
@@ -86,22 +87,47 @@ class Renny:
         icon.stop()
 
     def communicator(self):
+        self.construct_menu()
+        self.background.icon.stop()
         print("Communicator opened")
+        self.currentWindow = "Communicator"
+        self.chatbox = Chatbox(self.root)
+        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
+        self.root.after(0, self.root.deiconify)
 
     def find(self):
         print("Opening folder")
 
     def see_activity(self):
+        #self.construct_menu()
         self.background.icon.stop()
         print("Behaviour opened")
         self.currentWindow = "Behaviour"
-        console = Console(self.root)
-        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
-        self.root.after(0, self.root.deiconify)
+        self.console_root = tk.Toplevel(self.root)
+        self.console = Console(self.console_root)
+        #self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
+        #self.root.after(0, self.root.deiconify)
 
     def withdraw_window(self):
         self.root.withdraw()
         self.background.setup_system_tray(self.items)
+
+    def construct_menu(self):
+        #self.root = tk.Tk()
+        self.menu_bar = tk.Menu(self.root)
+        self.root.config(menu=self.menu_bar)
+        self.options_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Options", menu=self.options_menu)
+        self.options_menu.add_command(label="Find", command=self.find)
+        self.options_menu.add_command(label="See activity", command=self.see_activity)
+        self.options_menu.add_checkbutton(label="Running", variable=tk.BooleanVar(), command=self.toggle_running)
+        self.options_menu.add_separator()
+        self.options_menu.add_command(label="Set token", command=print("Set token"))
+        self.options_menu.add_command(label="Set character", command=print("Set character"))
+        self.options_menu.add_command(label="Open website...", command=print("Open website..."))
+        self.options_menu.add_command(label="Exit", command=self.on_exit)
+
+
 
 '''    def save_config(self):
         config_data = {

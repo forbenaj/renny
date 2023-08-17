@@ -2,7 +2,6 @@ import threading
 import time
 import pystray
 import tkinter as tk
-from app.behaviour import Console
 from PIL import Image
 
 class Background:
@@ -32,13 +31,17 @@ class Background:
 
         menu = []
 
-        for label, func, checkable in items:
+        for label, func, checkable, default in items:
             if label == "SEPARATOR":
                 menu.append(pystray.Menu.SEPARATOR)
             elif checkable:
                 menu.append(pystray.MenuItem(label,func,checked=lambda item:self.running))
+            elif default:
+                menu.append(pystray.MenuItem(label,func,default=True))
             else:
                 menu.append(pystray.MenuItem(label,func))
+        
+
 
         # Create the system tray icon
         self.icon = pystray.Icon("Renny", image, "Renny", menu)
