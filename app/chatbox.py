@@ -1,19 +1,19 @@
 import tkinter as tk
 from app.utils.wids import Scroller
 
-class cb:
+class cb(tk.Frame):
 
     def __init__(self,root):
+        super().__init__(root)
         
-        self.root = root
-        self.root.geometry("560x460")
+        root.geometry("560x460")
 
         self.chat_messages = Scroller(root)
         self.chat_messages.pack(fill="both",expand=1)
         self.chat_messages.config(bd=25,relief="sunken")
 
 
-        self.message_box = tk.Frame(self.root)
+        self.message_box = tk.Frame(root)
         self.message_box.pack(side="bottom")
 
         self.message_input = tk.Text(self.message_box, width=40, height=10)
@@ -26,6 +26,8 @@ class cb:
         self.receive_button = tk.Button(self.message_box,text="Receive", width=15, height=2,background="red",foreground="white",command=self.receiveMessage)
         self.receive_button.pack(side="left",pady=5,padx=5)
         tk.Frame(self.chat_messages.frame,width=450,bg="black").grid(column=0,columnspan=2)
+
+        self.pack()
 
     def sendMessage(self):
         msg = self.message_input.get(1.0,tk.END).strip()

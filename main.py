@@ -21,6 +21,7 @@ class Renny:
         self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.running=True
         self.path = self.load_config()
+        self.currentWindow = ""
 
         self.items = [("Chat", self.communicator, None),
                       ("Find", self.find, None),
@@ -53,6 +54,7 @@ class Renny:
         self.root.mainloop()
         
     def releaseRenny(self, path):
+        self.selectPath.destroy()
         self.root.withdraw()
         print(f"Renny is released at {path}")
 
@@ -80,6 +82,7 @@ class Renny:
 
     def on_exit(self, icon, item):
         print("Closing application")
+        self.root.destroy()
         icon.stop()
 
     def communicator(self):
@@ -91,7 +94,7 @@ class Renny:
     def see_activity(self):
         self.background.icon.stop()
         print("Behaviour opened")
-        self.root = tk.Tk()
+        self.currentWindow = "Behaviour"
         console = Console(self.root)
         self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.root.after(0, self.root.deiconify)
