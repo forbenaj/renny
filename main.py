@@ -18,17 +18,18 @@ class Renny:
 
         self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         self.root = root
-        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
+        #self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.running=True
         self.path = self.load_config()
-        self.currentWindow = ""
+        self.windows = []
 
-        self.items = [("Open communicator", self.communicator, False, True),
-                      ("Find", self.find, False, False),
-                      ("See activity", self.see_activity, False, False),
-                      ("SEPARATOR",None, False, False),
-                      ("Running", self.toggle_running,True, False),
-                      ("Exit", self.on_exit, False, False)]
+        #                Label                  Func                Checkable?           Checked?           Default?   
+        self.items = [("Open communicator",    self.communicator,      False,              None,             True),
+                      ("Find",                 self.find,              False,              None,             False),
+                      ("See activity",         self.see_activity,      False,              None,             False),
+                      ("SEPARATOR",            None,                   False,              None,             False),
+                      ("Running",              self.toggle_running,    True,               self.running,     False),
+                      ("Exit",                 self.on_exit,           False,              None,             False)]
         
 
     def load_config(self):
@@ -50,9 +51,8 @@ class Renny:
             #self.main(self.path)
 
     def firstTime(self):
-
         self.selectPath = treeview.tv(self.root,self.releaseRenny)
-        self.root.mainloop()
+        root.mainloop()
         
     def releaseRenny(self, path):
         self.selectPath.destroy()
@@ -69,17 +69,16 @@ class Renny:
         self.background.setup_system_tray(self.items)
 
 
+
     def scheduledActivity(self,t):
         i=""
         while True:
-            if self.background.running:
-                i=i+"."
-                print("Doing smthn"+i)
-                i= "" if len(i) > 2 else i
+            if self.running:
+                print(f"Current windows: {self.windows}")
             time.sleep(t)
 
-    def toggle_running(self, icon, item):
-        self.background.running = not self.background.running
+    def toggle_running(self):
+        self.running = not self.running
 
     def on_exit(self, icon, item):
         print("Closing application")
@@ -87,45 +86,69 @@ class Renny:
         icon.stop()
 
     def communicator(self):
-        self.construct_menu()
+        
         self.background.icon.stop()
+        
+        root = self.root if self.windows == [] else tk.Toplevel(self.root)
+
+        self.construct_menu(root)
+
         print("Communicator opened")
-        self.currentWindow = "Communicator"
-        self.chatbox = Chatbox(self.root)
-        self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
+        self.chatbox = Chatbox(root)
+        button = tk.Button(self.chatbox,text="kill",command=self.chatbox.destroy)
+        button.pack()
+        self.windows.append(self.chatbox)
+        print(f"This is {self.chatbox}")
+        root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(self.chatbox,root))
         self.root.after(0, self.root.deiconify)
 
     def find(self):
         print("Opening folder")
 
     def see_activity(self):
-        #self.construct_menu()
         self.background.icon.stop()
+
+        root = self.root if self.windows == [] else tk.Toplevel(self.root)
+            
+        self.construct_menu(root)
+
         print("Behaviour opened")
-        self.currentWindow = "Behaviour"
-        self.console_root = tk.Toplevel(self.root)
-        self.console = Console(self.console_root)
-        #self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
-        #self.root.after(0, self.root.deiconify)
+        self.console = Console(root)
+        self.windows.append(self.console)
+        root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(self.console,root))
+        self.root.after(0, self.root.deiconify)
 
-    def withdraw_window(self):
-        self.root.withdraw()
-        self.background.setup_system_tray(self.items)
+    def withdraw_window(self,window,root):
+        window.destroy()
+        root.withdraw()
+        self.windows.remove(window)
+        if not self.windows:
+            self.background.setup_system_tray(self.items)
 
-    def construct_menu(self):
-        #self.root = tk.Tk()
-        self.menu_bar = tk.Menu(self.root)
-        self.root.config(menu=self.menu_bar)
+    
+    def construct_menu(self,root):
+        
+        self.menu_bar = tk.Menu(root)
+        root.config(menu=self.menu_bar)
         self.options_menu = tk.Menu(self.menu_bar, tearoff=0)
+        
         self.menu_bar.add_cascade(label="Options", menu=self.options_menu)
-        self.options_menu.add_command(label="Find", command=self.find)
-        self.options_menu.add_command(label="See activity", command=self.see_activity)
-        self.options_menu.add_checkbutton(label="Running", variable=tk.BooleanVar(), command=self.toggle_running)
-        self.options_menu.add_separator()
-        self.options_menu.add_command(label="Set token", command=print("Set token"))
-        self.options_menu.add_command(label="Set character", command=print("Set character"))
-        self.options_menu.add_command(label="Open website...", command=print("Open website..."))
-        self.options_menu.add_command(label="Exit", command=self.on_exit)
+        
+        for label, func, checkable, checked, default in self.items:
+            self.options_menu.add
+            if label == "SEPARATOR":
+                self.options_menu.add_separator()
+            elif checkable:
+                self.boolean = tk.BooleanVar()
+                self.boolean.set(self.running)
+                self.options_menu.add_checkbutton(label="Running", variable=self.boolean, command=func)
+            else:
+                self.options_menu.add_command(label=label, command=func)
+
+        self.options_menu.add_command(label="Set token", command=lambda:print("Set token"))
+        self.options_menu.add_command(label="Set character", command=lambda:print("Set character"))
+        self.options_menu.add_command(label="Open website...", command=lambda:print("Open website..."))
+        
 
 
 

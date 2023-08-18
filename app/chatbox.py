@@ -8,12 +8,12 @@ class Chatbox(tk.Frame):
         
         root.geometry("560x460")
 
-        self.chat_messages = Scroller(root)
+        self.chat_messages = Scroller(self)
         self.chat_messages.pack(fill="both",expand=1)
         self.chat_messages.config(bd=25,relief="sunken")
 
 
-        self.message_box = tk.Frame(root)
+        self.message_box = tk.Frame(self)
         self.message_box.pack(side="bottom")
 
         self.message_input = tk.Text(self.message_box, width=40, height=10)

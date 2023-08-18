@@ -31,29 +31,19 @@ class Background:
 
         menu = []
 
-        for label, func, checkable, default in items:
+        for label, func, checkable, checked, default in items:
             if label == "SEPARATOR":
                 menu.append(pystray.Menu.SEPARATOR)
             elif checkable:
-                menu.append(pystray.MenuItem(label,func,checked=lambda item:self.running))
-            elif default:
-                menu.append(pystray.MenuItem(label,func,default=True))
+                menu.append(pystray.MenuItem(label,func,checked=lambda item:checked))
             else:
-                menu.append(pystray.MenuItem(label,func))
+                menu.append(pystray.MenuItem(label,func,default=default))
         
 
 
         # Create the system tray icon
         self.icon = pystray.Icon("Renny", image, "Renny", menu)
         self.icon.run()
-
-
-
-    def scheduledActivity(self,t):
-        while True:
-            if self.running:
-                print("Doing something...")
-            time.sleep(t)
 
 
 if __name__ == "__main__":
