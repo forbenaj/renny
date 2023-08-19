@@ -2,7 +2,7 @@ import os
 import app.treeview as treeview
 from app.renny import RennyTheLittleGuy
 from app.background import Background
-from app.behaviour import Console
+from app.console import Console
 from app.chatbox import Chatbox
 import tkinter as tk
 import time
@@ -18,18 +18,23 @@ class Renny:
 
         self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         self.root = root
+
+
         #self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.running=True
         self.path = self.load_config()
-        self.windows = []
+        self.openWindows = []
+        self.menues = []
 
-        #                Label                  Func                Checkable?           Checked?           Default?   
-        self.items = [("Open communicator",    self.communicator,      False,              None,             True),
-                      ("Find",                 self.find,              False,              None,             False),
-                      ("See activity",         self.see_activity,      False,              None,             False),
-                      ("SEPARATOR",            None,                   False,              None,             False),
-                      ("Running",              self.toggle_running,    True,               self.running,     False),
-                      ("Exit",                 self.on_exit,           False,              None,             False)]
+
+        #                Label                        Func                                  Checkable?           Checked?           Default?   
+        self.items = [("Open communicator",    lambda: self.open_gui(Chatbox),           False,              None,             True),
+                      ("Find",                 self.find,                                     False,              None,             False),
+                      ("See activity",         lambda: self.open_gui(Console),           False,              None,             False),
+                      ("SEPARATOR",            None,                                          False,              None,             False),
+                      ("Running",              self.toggle_running,                           True,               self.running,     False),
+                      ("Exit",                 self.on_exit,                                  False,              None,             False)]
+        
         
 
     def load_config(self):
@@ -55,7 +60,6 @@ class Renny:
         root.mainloop()
         
     def releaseRenny(self, path):
-        self.selectPath.destroy()
         self.root.withdraw()
         print(f"Renny is released at {path}")
 
@@ -74,74 +78,104 @@ class Renny:
         i=""
         while True:
             if self.running:
-                print(f"Current windows: {self.windows}")
+                print(f"Current windows: {self.openWindows}")
             time.sleep(t)
 
     def toggle_running(self):
         self.running = not self.running
+        self.update_menu()
+
+    def update_menu(self):
+        for menu in self.menues:
+            for boolean in menu.booleans:
+                boolean[1].set(self.running)
+        for i in range(len(self.background.checkables)):
+            self.background.checkables[i] = self.running
+
 
     def on_exit(self, icon, item):
         print("Closing application")
         self.root.destroy()
         icon.stop()
 
-    def communicator(self):
-        
-        self.background.icon.stop()
-        
-        root = self.root if self.windows == [] else tk.Toplevel(self.root)
 
-        self.construct_menu(root)
+    def open_gui(self,obj):
 
-        print("Communicator opened")
-        self.chatbox = Chatbox(root)
-        button = tk.Button(self.chatbox,text="kill",command=self.chatbox.destroy)
-        button.pack()
-        self.windows.append(self.chatbox)
-        print(f"This is {self.chatbox}")
-        root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(self.chatbox,root))
-        self.root.after(0, self.root.deiconify)
+
+        if (obj.__name__) not in self.openWindows:
+
+            self.background.icon.stop()
+            root = tk.Toplevel(self.root)
+
+            frame = obj(root)
+
+            menu = MenuCreator(root)
+            menu.construct_menu(self.items)
+            
+            print(f"{obj.__name__} opened")
+            self.openWindows.append(obj.__name__)
+            self.menues.append(menu)
+            root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(root,obj,menu))
+            self.update_menu()
+        else:
+            print("Window already opened")
+
+
+    def withdraw_window(self,root,obj,menu):
+        
+        root.destroy()
+        self.openWindows.remove(obj.__name__)
+        self.menues.remove(menu)
+        if not self.openWindows:
+            self.background.setup_system_tray(self.items)
+        
+
 
     def find(self):
         print("Opening folder")
 
-    def see_activity(self):
-        self.background.icon.stop()
 
-        root = self.root if self.windows == [] else tk.Toplevel(self.root)
-            
-        self.construct_menu(root)
 
-        print("Behaviour opened")
-        self.console = Console(root)
-        self.windows.append(self.console)
-        root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(self.console,root))
-        self.root.after(0, self.root.deiconify)
 
-    def withdraw_window(self,window,root):
-        window.destroy()
-        root.withdraw()
-        self.windows.remove(window)
+    '''def killChatbox(self):
+        self.chatbox.destroy()
+        self.chatbox_root.withdraw()
+        self.windows.remove(self.chatbox)
         if not self.windows:
             self.background.setup_system_tray(self.items)
 
+    def killConsole(self):
+        self.console.destroy()
+        self.console_root.withdraw()
+        self.windows.remove(self.console)
+        if not self.windows:
+            self.background.setup_system_tray(self.items)'''
     
-    def construct_menu(self,root):
+class MenuCreator(tk.Menu):
+
+    def __init__(self,root):
+        super().__init__(root)
+
+        root.config(menu=self)
+
+        self.booleans = []
         
-        self.menu_bar = tk.Menu(root)
-        root.config(menu=self.menu_bar)
-        self.options_menu = tk.Menu(self.menu_bar, tearoff=0)
+
+    def construct_menu(self, items):
+
+        self.options_menu = tk.Menu(self, tearoff=0)
         
-        self.menu_bar.add_cascade(label="Options", menu=self.options_menu)
-        
-        for label, func, checkable, checked, default in self.items:
+        self.add_cascade(label="Options", menu=self.options_menu)
+
+        for label, func, checkable, checked, default in items:
             self.options_menu.add
             if label == "SEPARATOR":
                 self.options_menu.add_separator()
             elif checkable:
-                self.boolean = tk.BooleanVar()
-                self.boolean.set(self.running)
-                self.options_menu.add_checkbutton(label="Running", variable=self.boolean, command=func)
+                value = tk.BooleanVar()
+                value.set(checked)
+                self.booleans.append((label,value))
+                self.options_menu.add_checkbutton(label="Running", variable=self.booleans[-1][1], command=func)
             else:
                 self.options_menu.add_command(label=label, command=func)
 
@@ -149,7 +183,6 @@ class Renny:
         self.options_menu.add_command(label="Set character", command=lambda:print("Set character"))
         self.options_menu.add_command(label="Open website...", command=lambda:print("Open website..."))
         
-
 
 
 '''    def save_config(self):

@@ -8,14 +8,15 @@ class Console(tk.Frame):
         root.geometry("600x500")
 
         root.title("Renny's behaviour")
+        self.pack(side="top",fill="both",expand=True)
 
         self.bg = bg
         self.fg = fg
 
-        self.header = tk.Label(root, text="Watch Renny's behaviour")
+        self.header = tk.Label(self, text="Watch Renny's behaviour")
         self.header.pack()
 
-        self.text =  tk.Text(root,state=tk.DISABLED,bg=self.bg,fg=self.fg)
+        self.text =  tk.Text(self,state=tk.DISABLED,bg=self.bg,fg=self.fg)
 
         self.scrollbar = tk.Scrollbar(self.text,command=self.text.yview)
         self.text.config(yscrollcommand=self.scrollbar.set)
@@ -23,12 +24,11 @@ class Console(tk.Frame):
         self.scrollbar.pack(side="right", fill="y")
         self.text.pack(side="top",fill="both",expand=True)
 
-        self.force_button = tk.Button(root,text="Force interaction",command=self.interact)
+        self.force_button = tk.Button(self,text="Force interaction",command=self.interact)
         self.force_button.pack(side="top")
 
-        tk.Button(root,text="Retrieve History",command=self.checkHistory).pack()
+        tk.Button(self,text="Retrieve History",command=self.checkHistory).pack()
 
-        self.pack()
 
     def checkHistory(self):
         

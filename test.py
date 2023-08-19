@@ -1,47 +1,126 @@
+from app.console import Console
+from app.chatbox import Chatbox
+import pystray
+from PIL import Image
 import tkinter as tk
+import time
 
 
-class Menu(tk.Frame):
-    def __init__(self, root):
-        super().__init__(root)
+class Renny:
 
-        root.title("Checkbutton Initialization Example")
+    def __init__(self,root):
+
+        self.root = root
+        self.running=True
+        self.windows = []
+
+        #                Label                  Func                Checkable?           Checked?           Default?   
+        self.items = [("Open communicator",    self.communicator,      False,              None,             True),
+                      ("See activity",         self.see_activity,      False,              None,             False),]
+        
 
 
-        add_menu_button = tk.Button(self,text="Add menu",command=self.add_menu)
-        add_menu_button.pack()
-        add_menu_button2 = tk.Button(self,text="Kill Roy",command=self.kr)
-        add_menu_button2.pack()
-        add_menu_button3 = tk.Button(self,text="Add menu",command=self.add_menu)
-        add_menu_button3.pack()
+    def run(self):
+        self.mainframe = tk.Frame(self.root)
+        self.mainframe.pack()
+        tk.Button(self.mainframe,text="Next",width=40,height=10,command=self.firstTime).pack()
+        self.root.mainloop()
 
-        self.pack()
 
-    def add_menu(self):
+
+    def firstTime(self):
+        self.mainframe.destroy()
+        self.root.withdraw()
+        
+
+        self.setup_system_tray(self.items)
+
+    def open_gui(self,window):
+        self.icon.stop()
+        if window == "chatbox":
+            self.communicator()
+        elif window == "console":
+            self.see_activity()
+
+
+    def communicator(self):
+        
+        self.chatbox_root = self.root if self.windows == [] else tk.Toplevel(self.root)
+        self.construct_menu(self.chatbox_root)
+        print("Communicator opened")
+        self.chatbox = Chatbox(self.chatbox_root)
+        tk.Button(self.chatbox,text="kill",command=self.kill_chatbox).pack()
+        self.windows.append(self.chatbox)
+        print(f"This is {self.chatbox}")
+        self.chatbox_root.protocol('WM_DELETE_WINDOW', self.kill_chatbox)
+        self.chatbox_root.after(100, self.chatbox_root.deiconify)
+
+
+
+    def see_activity(self):
+        self.console_root = self.root if self.windows == [] else tk.Toplevel(self.root)
+        self.construct_menu(self.console_root)
+        print("Behaviour opened")
+        self.console = Console(self.console_root)
+        tk.Button(self.console,text="kill",command=self.kill_console).pack()
+        self.windows.append(self.console)
+        print(f"This is {self.console}")
+        self.console_root.protocol('WM_DELETE_WINDOW', self.kill_console)
+        self.console_root.after(100, self.console_root.deiconify)
+
+
+
+
+
+    def withdraw_window(self,window,root):
+        window.destroy()
+        root.withdraw()
+        self.windows.remove(window)
+        if not self.windows:
+            self.setup_system_tray(self.items)
+
+
+    def kill_chatbox(self):
+        self.chatbox.destroy()
+        self.chatbox_root.withdraw()
+        self.windows.remove(self.chatbox)
+        if not self.windows:
+            self.setup_system_tray(self.items)
+
+    def kill_console(self):
+        self.console.destroy()
+        self.console_root.withdraw()
+        self.windows.remove(self.console)
+        if not self.windows:
+            self.setup_system_tray(self.items)
+
+    def setup_system_tray(self,items):
+
+        # Define the image to be shown in the system tray
+        image = Image.open("images/icon.png")  # Replace with the path to your icon image
+
+        menu = [pystray.MenuItem("Chatbox",lambda:self.open_gui("chatbox"),default=True),
+                pystray.MenuItem("Console",lambda:self.open_gui("console"))]
+
+
+        # Create the system tray icon
+        self.icon = pystray.Icon("Renny", image, "Renny", menu)
+        self.icon.run()
+    
+    def construct_menu(self,root):
+        
         self.menu_bar = tk.Menu(root)
         root.config(menu=self.menu_bar)
+        self.options_menu = tk.Menu(self.menu_bar, tearoff=0)
+        
+        self.menu_bar.add_cascade(label="Options", menu=self.options_menu)
+        
+        self.options_menu.add_command(label="Chatbox", command=self.communicator)
+        self.options_menu.add_command(label="Console", command=self.see_activity)
 
-        self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.menu_bar.add_cascade(label="File", menu=self.file_menu)
-
-        self.checkbutton_var = tk.BooleanVar()
-        self.checkbutton_var.set(True)  # Set initial state to checked
-
-        self.file_menu.add_checkbutton(label="Toggle Checkbutton", variable=self.checkbutton_var, command=self.toggle_checkbutton_state)
-        self.file_menu.add_command(label="Add Item",command=self.add_item)
-
-    def kr(self):
-        self.destroy()
-
-    def toggle_checkbutton_state(self):
-        print("Checkbutton state:", self.checkbutton_var.get())
-
-    def add_item(self):
-        print("Item added")
-        self.file_menu.add_checkbutton(label="Toggle Checkbutton 2", variable=self.checkbutton_var, command=self.toggle_checkbutton_state)
-        #file_menu.add_command(label="Add Item",command=add_item)
+        
 
 if __name__ == "__main__":
     root = tk.Tk()
-    menuer = Menu(root)
-    root.mainloop()
+    renny = Renny(root)
+    renny.run()

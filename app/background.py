@@ -10,11 +10,9 @@ class Background:
 
         self.path = path
 
-        #self.root = tk.Tk()
-
-        self.text_types = [".txt",".pdf",".docx"]
-
         self.running = True
+
+        self.checkables = []
 
 
     def setup_daemon_thread(self, t, activity):
@@ -35,7 +33,8 @@ class Background:
             if label == "SEPARATOR":
                 menu.append(pystray.Menu.SEPARATOR)
             elif checkable:
-                menu.append(pystray.MenuItem(label,func,checked=lambda item:checked))
+                self.checkables.append(checked)
+                menu.append(pystray.MenuItem(label,func,checked=lambda item:self.checkables[-1]))
             else:
                 menu.append(pystray.MenuItem(label,func,default=default))
         

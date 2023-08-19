@@ -1,7 +1,7 @@
 from app.api import chat
 from app.utils.folder import list_files_and_folders,go_back,extension
 from app.utils.file import read_pdf_text,read_docx_text,read_txt
-from app.behaviour import Console
+from app.console import Console
 import tkinter as tk
 import json
 
