@@ -13,12 +13,14 @@ from os import listdir, sep
 from os.path import isdir, join, abspath
 import win32api
 
-class tv(ttk.Frame):
+class Treeview(ttk.Frame):
     
     def __init__(self, main_window,callback):
         super().__init__(main_window)
 
         main_window.title("Select a folder")
+
+        main_window.geometry("400x400")
         #main_window.title("Explorador de archivos y carpetas")
         
         self.callback = callback
@@ -38,7 +40,7 @@ class tv(ttk.Frame):
             w.rowconfigure(0, weight=1)
             w.columnconfigure(0, weight=1)
         
-        self.pack()
+        self.pack(fill = "x", expand = True   )
         
         # Este diccionario conecta los IDs de los ítems de Tk con
         # su correspondiente archivo o carpeta.
@@ -51,13 +53,33 @@ class tv(ttk.Frame):
         # Load local drives
         self.load_drives()
 
+        '''self.settings = {"Token":"",
+                    "CharID":"tDMVnZFsQxT33IY306y5Fia_AYhfqgx3ecUYIpo6ZWQ"
+                    }
+        
+        SETUP_FRAME = tk.Frame(self,pady=20,padx=20)
+        SETUP_FRAME.pack(fill = "x", expand = True   )
+
+        TOKEN_LABEL      = tk.Label (SETUP_FRAME, text = "Token"        )
+        TOKEN_LABEL .pack           (                            )
+        self.TOKEN_INPUT = tk.Entry (SETUP_FRAME, justify = "center"    )
+        self.TOKEN_INPUT .pack      (fill = "x", expand = True   )
+        self.TOKEN_INPUT .insert    (0, self.settings["Token"] )
+
+        CHARA_LABEL      = tk.Label (SETUP_FRAME, text = "Character ID" )
+        CHARA_LABEL .pack           (                            )
+        self.CHARA_INPUT = tk.Entry (SETUP_FRAME, justify = "center"    )
+        self.CHARA_INPUT .pack      (fill = "x", expand = True   )
+        self.CHARA_INPUT .insert    (0, self.settings["CharID"] )'''
+
+    
 
         # Cargar el directorio raíz.
         #self.load_tree(abspath(sep))
         
         # Añadir el botón
-        self.print_button = ttk.Button(self, text="Release Renny", command=self.submit_path)
-        self.print_button.pack()
+        #self.print_button = ttk.Button(self, text="Release Renny", command=self.submit_info)
+        #self.print_button.pack()
     
     def listdir(self, path):
         try:
@@ -130,17 +152,21 @@ class tv(ttk.Frame):
         self.load_subitems(iid)
 
     
-    def submit_path(self):
+    def submit_info(self):
         
         try:
             selected_item = self.treeview.selection()[0]
             selected_path = self.fsobjects[selected_item]
+            #self.settings["Token"] = self.TOKEN_INPUT.get()
+            #self.settings["CharID"] = self.CHARA_INPUT.get()
             messagebox.showinfo("Renny is free!",f"Renny released at:\n{selected_path}")
-            self.callback(selected_path)
+            self.callback(selected_path)#,self.settings)
+            #return selected_path
         except IndexError:
             messagebox.showwarning("Directory error","Select a correct path")
 
+
 if __name__ == "__main__":
     main_window = tk.Tk()
-    app = tv(main_window,print("test"))
+    app = Treeview(main_window,print("test"))
     app.mainloop()

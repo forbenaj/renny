@@ -1,11 +1,13 @@
 import os
-import app.treeview as treeview
+from app.treeview import Treeview
 from app.renny import RennyTheLittleGuy
 from app.background import Background
 from app.console import Console
 from app.chatbox import Chatbox
+from app.settings import SETTINGS
 import tkinter as tk
 import time
+import json
 
 # Dear sir, I would like to complain about that last tutorial about people not writing unit tests.
 # I myself have coded all my life without testing 
@@ -19,33 +21,40 @@ class Renny:
         self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         self.root = root
 
-
-        #self.root.protocol('WM_DELETE_WINDOW', self.withdraw_window)
         self.running=True
-        self.path = self.load_config()
         self.openWindows = []
         self.menues = []
+        self.t = 1
+
+        self.state = self.load_state()
+        self.path = self.state["Path"]
 
 
-        #                Label                        Func                                  Checkable?           Checked?           Default?   
+        #                Label                        Func                             Checkable?           Checked?           Default?   
         self.items = [("Open communicator",    lambda: self.open_gui(Chatbox),           False,              None,             True),
-                      ("Find",                 self.find,                                     False,              None,             False),
+                      ("Find",                 self.find,                                False,              None,             False),
                       ("See activity",         lambda: self.open_gui(Console),           False,              None,             False),
-                      ("SEPARATOR",            None,                                          False,              None,             False),
-                      ("Running",              self.toggle_running,                           True,               self.running,     False),
-                      ("Exit",                 self.on_exit,                                  False,              None,             False)]
+                      ("SEPARATOR",            None,                                     False,              None,             False),
+                      ("Settings",             self.open_settings,                       False,              None,             False),
+                      ("Running",              self.toggle_running,                      True,               self.running,     False),
+                      ("Exit",                 self.on_exit,                             False,              None,             False)]
         
         
 
-    def load_config(self):
+    def load_state(self):
         try:
             #file_path = os.path.join(desktop, "config.cfg")  # Use the same file_path used in save_config()
             
-            with open("config.cfg", "r") as config_file:
-                return config_file.read()
+            with open("state.cfg", "r") as state_file:
+                return json.loads(state_file.read())
 
         except FileNotFoundError:
-            return ""
+            return {"Path":""}
+            #return {}
+        
+    def save_state(self):
+        with open("state.cfg", "w") as state_file:
+                json.dump(self.state,state_file)
 
 
     def run(self):
@@ -54,32 +63,74 @@ class Renny:
         else:
             print(self.path)
             #self.main(self.path)
+            
 
     def firstTime(self):
-        self.selectPath = treeview.tv(self.root,self.releaseRenny)
+        treeview = Treeview(self.root,self.releaseRenny)
+        self.setup = SETTINGS(treeview)
+        self.setup.load_settings()
+        self.releaseButton = tk.Button(treeview, text="Release Renny", command=treeview.submit_info)
+        self.releaseButton.pack()
         root.mainloop()
+
+
+    def open_settings(self):
+        root = tk.Toplevel(self.root)
+        self.settings = SETTINGS(root)
         
     def releaseRenny(self, path):
+        self.setup.save_settings()
+        #self.settings = self.setup.settings
+
+        try:
+            with open("log.txt", "r") as log_file:
+                self.log = json.loads(log_file.read())
+        except FileNotFoundError:
+            pass
+
+
+        self.path = path
         self.root.withdraw()
         print(f"Renny is released at {path}")
 
-        #Renny = RennyTheLittleGuy(path)
+        self.renny = RennyTheLittleGuy(path)
 
-        #console = Console
 
         self.background = Background(path)
 
-        self.background.setup_daemon_thread(1,self.scheduledActivity)
+        self.background.setup_daemon_thread(self.scheduledActivity)
         self.background.setup_system_tray(self.items)
 
-
-
-    def scheduledActivity(self,t):
-        i=""
+    def scheduledActivity(self):
         while True:
             if self.running:
                 print(f"Current windows: {self.openWindows}")
-            time.sleep(t)
+                time.sleep(self.t)
+
+
+    def interactWithRenny(self):
+        self.background.setup_daemon_thread(self.sendMessage)
+
+    def sendMessage(self):
+        print("Loading response...")
+        response = self.renny.listFolders(self.path)
+        self.saveLog(response)
+        self.running = False
+        #self.renny.perform(response,0)
+        self.running = True
+
+    def saveLog(self,response):
+        self.log = []
+        
+        try:
+            with open("log.txt", "r") as log_file:
+                self.log = json.loads(log_file.read())
+        except FileNotFoundError:
+            pass
+        with open("log.txt","w") as log_file:
+            self.log.append(json.loads(response))
+            json.dump(self.log,log_file,indent=4)
+
 
     def toggle_running(self):
         self.running = not self.running
@@ -111,12 +162,19 @@ class Renny:
 
             menu = MenuCreator(root)
             menu.construct_menu(self.items)
+            tk.Button(frame,text="Force interaction",command=self.interactWithRenny).pack()
             
             print(f"{obj.__name__} opened")
             self.openWindows.append(obj.__name__)
             self.menues.append(menu)
             root.protocol('WM_DELETE_WINDOW', lambda: self.withdraw_window(root,obj,menu))
+
+            try:
+                frame.initialize(self.log)
+            except AttributeError:
+                print("what the heck")
             self.update_menu()
+
         else:
             print("Window already opened")
 
@@ -127,6 +185,9 @@ class Renny:
         self.openWindows.remove(obj.__name__)
         self.menues.remove(menu)
         if not self.openWindows:
+            for child in self.root.winfo_children():
+                if isinstance(child, tk.Toplevel):
+                    child.destroy()
             self.background.setup_system_tray(self.items)
         
 

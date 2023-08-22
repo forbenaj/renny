@@ -1,0 +1,18 @@
+[
+    {
+        "mind": "Woah! There is a lot of files here! Let's see, the G directory is named BENAJ, it has a bunch of folders like BENAJALL, and also there's COBOL and GTD folders!, interesting! Let's check the 'Mis Cosas' folder",
+        "open-folder": "Mis Cosas"
+    },
+    {
+        "mind": "The Mis Cosas folder has different folders like Mis documentos, Mis im\u00e1genes and Mis v\u00eddeos! Let see 'Mis documentos' folder.",
+        "open-folder": "Mis documentos"
+    },
+    {
+        "mind": "Woah! There are many video files, and there is a folder called 'Benja' inside 'Mis documentos' folder, and there is also a 'cstrike' folder! Let's check the 'Benja' folder.",
+        "open-folder": "Benja"
+    },
+    {
+        "mind": "This folder has a lot of images! There is a folder called 'Archive' and another folder called 'Motherbound', let's check 'Archive' folder.",
+        "open-folder": "Archive"
+    }
+]

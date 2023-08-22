@@ -18,7 +18,7 @@ class Console(tk.Frame):
 
         self.text =  tk.Text(self,state=tk.DISABLED,bg=self.bg,fg=self.fg)
 
-        self.scrollbar = tk.Scrollbar(self.text,command=self.text.yview)
+        self.scrollbar = tk.Scrollbar(self,command=self.text.yview)
         self.text.config(yscrollcommand=self.scrollbar.set)
 
         self.scrollbar.pack(side="right", fill="y")
@@ -38,10 +38,6 @@ class Console(tk.Frame):
         except FileNotFoundError:
             print("Not found")
 
-    def testAddText(self):
-        self.text.config(state=tk.NORMAL)
-        self.text.insert(tk.END,"Add test text\n")
-        self.text.yview_moveto(1.0)
 
     def interact(self):
         self.text.config(state=tk.NORMAL)
@@ -52,6 +48,33 @@ class Console(tk.Frame):
     def colors(self,bg="black",fg="white"):
         self.bg=bg
         self.fg=fg
+
+    def initialize(self,log):
+        self.text.tag_configure("mind",foreground=self.fg)
+        self.text.tag_configure("action",foreground="#33FA12")
+
+        for i in log:
+            keys = list(i.keys())
+            mind = i['mind']
+            action = keys[1]
+            file = i[action]
+
+            self.text.config(state=tk.NORMAL)
+            self.text.insert(tk.END,f"-{mind}\n","mind")
+
+
+            if action == "open-file":
+                self.text.insert(tk.END,f"> He wants to check {file}\n\n","action")
+            if action == "open-folder":
+                self.text.insert(tk.END,f"> He wants to open {file}\n\n","action")
+            if action == "keep-reading":
+                self.text.insert(tk.END,f"> He wants to keep reading {file}\n\n","action")
+            if action == "write-journal":
+                self.text.insert(tk.END,f"> He wants to write on his journal\n\n","action")
+            self.text.config(state=tk.DISABLED)
+
+            self.text.yview_moveto(1.0)
+
 
 
 if __name__ == "__main__":

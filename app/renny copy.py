@@ -42,23 +42,25 @@ class RennyTheLittleGuy:
         elif status == "denied":
             msg = f'Permission denied: "{self.path}"\n'
 
-    
         response = chat(msg)
-        return response
 
-        
-    def getData(self,response,i):
         # Parsing the JSON string
         data = json.loads(response)
         keys = list(data.keys())
 
+
         # Accessing the data
-        mind = data['mind']
-        action = keys[1]
-        file = data[action]
+        self.mind = data['mind']
+        self.action = keys[1]
+        self.file = data[self.action]
 
+        print(self.mind)
 
-        print(mind)
+        #self.perform(self.action,self.file,self.index)
+        
+    def perform(self,action,file,i):
+        if action == "stand-by":
+            print("He wants to stand-by at "+self.path)
         if action == "open-file":
             print("He wants to check "+file)
             if action == "open-file":
@@ -69,13 +71,12 @@ class RennyTheLittleGuy:
                 result = "This is not a text file"
                 newIndex="0"
             return result,newIndex
-        if action == "open-folder":
-            print("He wants to open "+file)
         if action == "keep-reading":
             print("He wants to keep reading "+file)
+        if action == "open-folder":
+            print("He wants to open "+file)
         if action == "write-journal":
             print("He wants to write on his journal")
-            
 
 if __name__ == "__main__":
     Renny = RennyTheLittleGuy("G:/Benja 2010")

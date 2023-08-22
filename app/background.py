@@ -15,9 +15,9 @@ class Background:
         self.checkables = []
 
 
-    def setup_daemon_thread(self, t, activity):
+    def setup_daemon_thread(self, activity):
         # Create a thread for the daemon task
-        daemon_thread = threading.Thread(target=activity, args=(t,))
+        daemon_thread = threading.Thread(target=activity)
         daemon_thread.daemon = True
         daemon_thread.start()
 
