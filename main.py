@@ -18,7 +18,7 @@ class Renny:
 
     def __init__(self,root):
 
-        self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') # UNUSED
+        self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') # UNUSED. Prolly will need it for the Renny House
         self.root = root
 
         self.running=True
@@ -26,9 +26,13 @@ class Renny:
         self.menues = [] # Stores the "Options" menu in every window, to be able to update the booleans
         self.t = 1 # Sleep time for scheduled function, in seconds
 
-        self.state = self.load_state() # Current state of Renny. Currently only Path
-        self.path = self.state["Path"] # Get path from state
+        self.state = self.load_state() # Current state of Renny.
 
+        # Get the values from the state. May not need it in the main script
+        self.path = self.state["Path"]
+        self.action = self.state["Action"]
+        self.file = self.state["File"]
+        self.index = self.state["Index"]
 
         # This dictionary contains the items for the tray and the options menu
 
@@ -51,7 +55,7 @@ class Renny:
                 return json.loads(state_file.read())
 
         except FileNotFoundError:
-            return {"Path":""}
+            return {"Path":"","Action":"","File":""}
             #return {}
         
     def save_state(self):
@@ -135,9 +139,18 @@ class Renny:
         print("Loading response...")
         
         # This fella holds the thread until we get a response from the server
+
         response = self.renny.listFolders(self.path) # THIS ONE SHOULD BE ANOTHER FUNCTION, LIKE "SENDMESSAGE"
 
         self.saveLog(response) # Add current message to the log, so the Console can read it
+
+        data = json.loads(response)
+        keys = list(data.keys())
+
+        # Accessing the data
+        mind = data['mind']
+        action = keys[1]
+        file = data[action]
 
         self.running = False # Not sure if this should be here? I think I set it to False to ensure no message is sent again before the thread is done, so it should be up
         #self.renny.perform(response,0)

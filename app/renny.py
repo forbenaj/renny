@@ -9,11 +9,39 @@ import json
 class RennyTheLittleGuy:
     def __init__(self, path):
 
-        self.path = path
+        self.path = path # Do we need this path here?
 
         self.text_types = [".txt",".pdf",".docx"]
 
 
+    def sendData(self,state):
+
+        path = state["Path"]
+        action = state["Action"]
+        file = state["File"]
+        index = state["Index"]
+
+        response = {}
+
+        if action == "begin": # The "begin" action is only given on the first run
+            response = self.listFolders(path)
+
+        if action == "open-folder":
+            print("He wants to open "+file)
+            response = self.listFolders(path+"/"+file)
+
+        if action == "open-file":
+            if extension(file) == ".txt":
+                result,newIndex = read_txt(path+"/"+file,index)
+            else:
+                result = "This is not a text file"
+                newIndex="0"
+            return result,newIndex
+        
+        if action == "keep-reading":
+            print("He wants to keep reading "+file)
+        if action == "write-journal":
+            print("He wants to write on his journal")
 
     def listFolders(self,path):
 
