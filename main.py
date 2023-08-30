@@ -139,8 +139,7 @@ class Renny:
         print("Loading response...")
         
         # This fella holds the thread until we get a response from the server
-
-        response = self.renny.listFolders(self.path) # THIS ONE SHOULD BE ANOTHER FUNCTION, LIKE "SENDMESSAGE"
+        response,index = self.renny.sendData(self.state)
 
         self.saveLog(response) # Add current message to the log, so the Console can read it
 
@@ -149,8 +148,9 @@ class Renny:
 
         # Accessing the data
         mind = data['mind']
-        action = keys[1]
-        file = data[action]
+        self.action = keys[1]
+        self.file = data[self.action]
+        self.index = index
 
         self.running = False # Not sure if this should be here? I think I set it to False to ensure no message is sent again before the thread is done, so it should be up
         #self.renny.perform(response,0)

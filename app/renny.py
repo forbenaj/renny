@@ -4,6 +4,7 @@ from app.utils.file import read_pdf_text,read_docx_text,read_txt
 from app.console import Console
 import tkinter as tk
 import json
+import os
 
 
 class RennyTheLittleGuy:
@@ -21,27 +22,34 @@ class RennyTheLittleGuy:
         file = state["File"]
         index = state["Index"]
 
-        response = {}
+        message = ""
 
         if action == "begin": # The "begin" action is only given on the first run
-            response = self.listFolders(path)
+            message = self.listFolders(path)
 
         if action == "open-folder":
             print("He wants to open "+file)
-            response = self.listFolders(path+"/"+file)
+            message = self.listFolders(path+"/"+file)
+
+        if action == "close-folder":
+            print("He wants to open go back, close "+file)
+            message = self.listFolders(go_back(path))
 
         if action == "open-file":
             if extension(file) == ".txt":
-                result,newIndex = read_txt(path+"/"+file,index)
+                content,index = read_txt(path+"/"+file,index)
+                message = f'You are reading "{file}"\n"{content}"\n> Keep reading or close file?'
             else:
-                result = "This is not a text file"
-                newIndex="0"
-            return result,newIndex
+                message = "This is not a text file\n"+self.listFolders(path)
+                index="0"
         
         if action == "keep-reading":
             print("He wants to keep reading "+file)
         if action == "write-journal":
             print("He wants to write on his journal")
+
+        response = chat(message)
+        return response,index
 
     def listFolders(self,path):
 
@@ -70,9 +78,7 @@ class RennyTheLittleGuy:
         elif status == "denied":
             msg = f'Permission denied: "{self.path}"\n'
 
-    
-        response = chat(msg)
-        return response
+        return msg
 
         
     def getData(self,response,i):
