@@ -33,7 +33,9 @@ class Renny:
         self.action = self.state["Action"]
         self.file = self.state["File"]
         self.index = self.state["Index"]
+        self.sent_msg = self.state["Sent_msg"]
 
+        self.receiveMessage = None
         # This dictionary contains the items for the tray and the options menu
 
         #                Label                        Func                             Checkable?           Checked?           Default?   
@@ -55,7 +57,7 @@ class Renny:
                 return json.loads(state_file.read())
 
         except FileNotFoundError:
-            return {"Path":"","Action":"","File":""}
+            return {"Path":"","Action":"begin","File":"","Index":0,"Sent_msg":""}
             #return {}
         
     def save_state(self):
@@ -84,7 +86,9 @@ class Renny:
     # MOVE THIS, PROLLY WITH OTHER WINDOWS
     def open_settings(self):
         root = tk.Toplevel(self.root)
+        root.geometry("400x200")
         self.settings = SETTINGS(root)
+        self.settings.load_settings()
         
 
 
@@ -131,26 +135,44 @@ class Renny:
 
 
     # Setup the function to communicate with Renny via the api. This needs a daemon thread because it takes a shit ton of seconds and holds the thread forever
-    def interactWithRenny(self):
+    def interactWithRenny(self,msg,func):
+        self.sent_msg = msg
+        self.receiveMessage = func
         self.background.setup_daemon_thread(self.sendMessage)
 
 
     def sendMessage(self):
         print("Loading response...")
         
+        if self.sent_msg:
+            self.receiveMessage("__wait__")
+
+        self.state["Sent_msg"] = self.sent_msg
+    
         # This fella holds the thread until we get a response from the server
-        response,index = self.renny.sendData(self.state)
+        data = self.renny.sendData(self.state)
 
-        self.saveLog(response) # Add current message to the log, so the Console can read it
+        #self.saveLog(data) # Add current message to the log, so the Console can read it
 
-        data = json.loads(response)
         keys = list(data.keys())
 
         # Accessing the data
         mind = data['mind']
         self.action = keys[1]
         self.file = data[self.action]
-        self.index = index
+        self.path = data['path']
+        self.index = data['index']
+
+        # This whole code may be reduced, we maynot need the selr variables for each individual state
+        self.state["Path"] = self.path
+        self.state["Action"] = self.action
+        self.state["File"] = self.file
+        self.state["Index"] = self.index
+
+        self.save_state()
+        
+        if self.sent_msg:
+            self.receiveMessage(mind)
 
         self.running = False # Not sure if this should be here? I think I set it to False to ensure no message is sent again before the thread is done, so it should be up
         #self.renny.perform(response,0)
@@ -168,7 +190,7 @@ class Renny:
         except FileNotFoundError:
             pass
         with open("log.txt","w") as log_file:
-            self.log.append(json.loads(response))
+            self.log.append(response)
             json.dump(self.log,log_file,indent=4)
 
 
@@ -216,13 +238,14 @@ class Renny:
             self.background.icon.stop() # pystray needs to be stopped as it takes the main thread
             root = tk.Toplevel(self.root) # Needs to be Toplevel, or else the code gets messy and works weird, and also I don't even need the main root
 
-            frame = obj(root) # Main frame, inside the toplevel. Remember our window modules are actually frames, as they are submodules of Frame
+            frame = obj(root,self.interactWithRenny) # Main frame, inside the toplevel. Remember our window modules are actually frames, as they are submodules of Frame
+            # Right now I added the sendMessage because I need it for the Chatbox, but the Console doesn't need it
 
             menu = MenuCreator(root) # Adds te Options menu. Found it easier to add it to both
             menu.construct_menu(self.items)
 
             # TESTER. This button is naturally hidden in the Chatbox. Can be seen by extending the window
-            tk.Button(frame,text="Force interaction",command=self.interactWithRenny).pack()
+            tk.Button(frame,text="Force interaction",command=lambda:self.interactWithRenny("",None)).pack()
 
             print(f"{obj.__name__} opened")
 

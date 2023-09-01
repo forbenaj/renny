@@ -2,7 +2,7 @@ import tkinter as tk
 
 class Console(tk.Frame):
 
-    def __init__(self,root,bg="black",fg="white"):
+    def __init__(self,root,func,bg="black",fg="white"):
         super().__init__(root)
 
         root.geometry("600x500")

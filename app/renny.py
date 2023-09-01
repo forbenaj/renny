@@ -5,6 +5,7 @@ from app.console import Console
 import tkinter as tk
 import json
 import os
+import time
 
 
 class RennyTheLittleGuy:
@@ -21,35 +22,50 @@ class RennyTheLittleGuy:
         action = state["Action"]
         file = state["File"]
         index = state["Index"]
+        sent_msg = state["Sent_msg"]
 
         message = ""
 
-        if action == "begin": # The "begin" action is only given on the first run
+        if sent_msg:
+            message = "User: "+sent_msg
+
+        elif action == "begin": # The "begin" action is only given on the first run
             message = self.listFolders(path)
 
-        if action == "open-folder":
+        elif action == "open-folder":
             print("He wants to open "+file)
+            path = path+"/"+file
             message = self.listFolders(path+"/"+file)
 
-        if action == "close-folder":
+        elif action == "close-folder":
             print("He wants to open go back, close "+file)
             message = self.listFolders(go_back(path))
 
-        if action == "open-file":
+        elif action == "open-file" or action =="keep-reading":
             if extension(file) == ".txt":
-                content,index = read_txt(path+"/"+file,index)
-                message = f'You are reading "{file}"\n"{content}"\n> Keep reading or close file?'
+                content,index, eof = read_txt(path+"/"+file,index)
+                act = "are" if action == "open-file" else "continue"
+                end = "> Keep reading or close file?" if not eof else "end of file."
+                message = f'You {act} reading "{file}"\n"{content}"\n{end}'
             else:
                 message = "This is not a text file\n"+self.listFolders(path)
                 index="0"
         
-        if action == "keep-reading":
-            print("He wants to keep reading "+file)
-        if action == "write-journal":
+        elif action == "write-journal":
             print("He wants to write on his journal")
 
-        response = chat(message)
-        return response,index
+        #response = chat(message)
+        print("Pretending to get data...")
+        time.sleep(5)
+        response = '{"mind": "Hellot here!!","open-folder": "Mis Cosas"}'
+        data = json.loads(response)
+
+        data["path"] = path
+        data["index"] = index
+        data["talking"] = False
+
+
+        return data
 
     def listFolders(self,path):
 
@@ -113,4 +129,13 @@ class RennyTheLittleGuy:
 
 if __name__ == "__main__":
     Renny = RennyTheLittleGuy("G:/Benja 2010")
+    i = 0
+    while True:
+        action = input("Specify next action:\n")
+        state = {
+            "Path":"C:/Users/Admin/Desktop",
+            "Action":action,
+            "File":"test.txt",
+            "Index":i}
+        response, i = Renny.sendData(state)
     #Renny.setup_system_tray(10)

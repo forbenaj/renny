@@ -65,9 +65,13 @@ def read_txt(txt_file,i):
     with open(txt_file,"r", encoding="utf-8") as file:
         text = file.read()
 
+
+    eof = True if i+1000 > len(text) else False
+
     result = text[i:i+1000]
 
-    return result,i+1000
+
+    return result,i+1000,eof
 
 #print(read_txt("C:/Benaj/Desktop/The Stigma.txt",0))
 
