@@ -71,15 +71,15 @@ For most purposes, you can use my Renny's character ID, with a few consideration
 You can experiment by creating your own character. I'd love to see experiments on other definitions, greetings or descriptions.
   
 - **Creating your own Renny:**
-  1. In the Character AI webpage, go to Create and select Create a Character
-  2. Click on Edit Details (Advanced)
-  3. Name him whatever you want
-  4. Copy all values from the definition.txt file, including Greeting, Short Description, Long Description and Definition
-  5. Save your character, and copy the char value from the URL
+1. In the Character AI webpage, go to Create and select Create a Character
+2. Click on Edit Details (Advanced)
+3. Name him whatever you want
+4. Copy all values from the definition.txt file, including Greeting, Short Description, Long Description and Definition
+5. Save your character, and copy the char value from the URL
 
 ## Usage
 
-¯\_(ツ)_/¯ He just walks around.
+¯\\\_(ツ)\_/¯ He just walks around.
 
 - Talk to him if you want, or open the console to spy on him.
 - Get his opinions on your texts.
