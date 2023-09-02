@@ -99,4 +99,4 @@ Also, please create Renny characters in the Character AI website and experiment 
 
 I hope Renny enjoys having a vacation in your computer!
 
-![Renny](renny.png)
+![Renny](images/icon.png)
