@@ -1,6 +1,6 @@
 # 🤖 Renny - Just a little guy inside your computer
 
-Renny is a little person who lives in your computer. He likes to wander through your directories, browse your files, give his opinion on your texts, and write in his journal all his adventures. He's essentially a bening virus. At the end of the day, Renny returns to his little house, which is nothing more than a folder on the desktop where he keeps his stuff (shortcuts to his favorite folders, his travel-journal.txt, photos of his adventures, etc).
+Renny is a little person that lives in your computer. He likes to wander through your directories, browse your files, give his opinion on your texts, and write in his journal all his adventures. He's essentially a bening virus. At the end of the day, Renny returns to his little house, which is nothing more than a folder on the desktop where he keeps his stuff (shortcuts to his favorite folders, his travel-journal.txt, photos of his adventures, etc).
 
 From time to time it is possible to find Renny browsing through our folders. If we double click on him, we can talk to him, and he will tell us what he is doing. It is also possible to use our "communicator", which is a small program to talk to him wherever he is. If he wants, he will tell us where he is and if we can visit him.
 
