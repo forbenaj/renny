@@ -9,7 +9,7 @@ Only tested on Windows because I'm not a nerd. Would love some help from nerds t
 
 ## Features
 
-- **He just walks around:** ¯\\\\_(ツ)_/¯ He just walks around
+- **He just walks around:** ¯\\\_(ツ)\_/¯ He just walks around
 - **Interactive Conversations:** Chat to Renny to engage in conversations with him and discover what he's up to.
 - **Customizable personality:** By modifying the "definition" in the associated character in Character.AI 
 
