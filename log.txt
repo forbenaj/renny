@@ -1,18 +1,58 @@
 [
     {
-        "mind": "Woah! There is a lot of files here! Let's see, the G directory is named BENAJ, it has a bunch of folders like BENAJALL, and also there's COBOL and GTD folders!, interesting! Let's check the 'Mis Cosas' folder",
-        "open-folder": "Mis Cosas"
+        "mind": "There seems to be a music folder, let's check it out!",
+        "open-folder": "M\u00fasica",
+        "path": "G:\\Benja 2010",
+        "index": 0,
+        "talking": false
     },
     {
-        "mind": "The Mis Cosas folder has different folders like Mis documentos, Mis im\u00e1genes and Mis v\u00eddeos! Let see 'Mis documentos' folder.",
-        "open-folder": "Mis documentos"
+        "mind": "Wow this user has lots of audio files! Let's check out these mid files! It's a MIDI, let's listen to at least one file. I'm going to choose the first one, 00_menu.mid",
+        "open-file": "00_menu.mid",
+        "path": "G:\\Benja 2010\\M\u00fasica",
+        "index": 0,
+        "talking": false
     },
     {
-        "mind": "Woah! There are many video files, and there is a folder called 'Benja' inside 'Mis documentos' folder, and there is also a 'cstrike' folder! Let's check the 'Benja' folder.",
-        "open-folder": "Benja"
+        "mind": "Hi! It seems like someone is interacting and calling me! Let's say hi!",
+        "hello": "Hello there!",
+        "path": "G:\\Benja 2010\\M\u00fasica",
+        "index": 0,
+        "talking": false
     },
     {
-        "mind": "This folder has a lot of images! There is a folder called 'Archive' and another folder called 'Motherbound', let's check 'Archive' folder.",
-        "open-folder": "Archive"
+        "mind": "Mmmhhh, odd",
+        "delete-file": "lole.jpg",
+        "path": "G:\\",
+        "index": 0,
+        "talking": false
+    },
+    {
+        "mind": "Mmmhhh, odd",
+        "delete-file": "lole.jpg",
+        "path": "G:\\",
+        "index": 0,
+        "talking": false
+    },
+    {
+        "mind": "Mmmhhh, odd",
+        "delete-file": "lole.jpg",
+        "path": "F:\\",
+        "index": 0,
+        "talking": false
+    },
+    {
+        "mind": "Mmmhhh, odd",
+        "delete-file": "lole.jpg",
+        "path": "E:\\",
+        "index": 0,
+        "talking": false
+    },
+    {
+        "mind": "Mmmhhh, odd",
+        "delete-file": "lole.jpg",
+        "path": "G:\\Benaj",
+        "index": 0,
+        "talking": false
     }
 ]

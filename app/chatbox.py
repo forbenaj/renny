@@ -48,11 +48,12 @@ class Chatbox(tk.Frame):
     def receiveMessage(self,msg):
         #msg = "Tbd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24bd=24"
         if msg == "__wait__":
-            self.message_input.config(state=tk.DISABLED,bg="#CCCCCC")
-            self.send_button.config(state=tk.DISABLED,bg="#CCCCCC")
+            
+            self.message_input.config(state=tk.DISABLED,bg="#CCCCCC",cursor="watch")
+            self.send_button.config(state=tk.DISABLED,bg="#CCCCCC",cursor="watch")
         else:
-            self.message_input.config(state=tk.NORMAL,bg="#FFFFFF")
-            self.send_button.config(state=tk.NORMAL,bg="green")
+            self.message_input.config(state=tk.NORMAL,bg="#FFFFFF",cursor="ibeam")
+            self.send_button.config(state=tk.NORMAL,bg="green",cursor="arrow")
             new_message = tk.Label(self.chat_messages.frame, text=msg,bg="pink",wraplength=233,pady=5,padx=5,relief="sunken")
             new_message.grid(column=0)
             self.chat_messages.updateScroller()

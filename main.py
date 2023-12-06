@@ -47,7 +47,7 @@ class Renny:
                       ("Running",              self.toggle_running,                      True,               self.running,     False),
                       ("Exit",                 self.on_exit,                             False,              None,             False)]
         
-        
+        self.listOfActions = ["begin","open-folder","close-folder","open-file","write-journal"]
 
     def load_state(self):
         try:
@@ -72,6 +72,7 @@ class Renny:
             self.firstTime()
         else:
             print(self.path)
+            self.releaseRenny(self.path)
             #self.main(self.path)
             
 
@@ -104,7 +105,7 @@ class Renny:
         except FileNotFoundError:
             pass
 
-
+        self.state["Path"] = path
         self.path = path
         self.root.withdraw() # This withdraws the main tkinter window, taking it out of the main thread
         print(f"Renny is released at {path}")
@@ -144,10 +145,14 @@ class Renny:
     def sendMessage(self):
         print("Loading response...")
         
+        isRunning = self.running
+        self.running = False
+
         if self.sent_msg:
             self.receiveMessage("__wait__")
 
         self.state["Sent_msg"] = self.sent_msg
+
     
         # This fella holds the thread until we get a response from the server
         data = self.renny.sendData(self.state)
@@ -169,14 +174,20 @@ class Renny:
         self.state["File"] = self.file
         self.state["Index"] = self.index
 
+        time.sleep(2)
+        if self.action not in self.listOfActions:
+            print("renny trying stuff")
+            self.background.icon.notify("Renny is trying something new","Renny")
+
+        self.saveLog(data)
+
         self.save_state()
         
         if self.sent_msg:
             self.receiveMessage(mind)
 
-        self.running = False # Not sure if this should be here? I think I set it to False to ensure no message is sent again before the thread is done, so it should be up
-        #self.renny.perform(response,0)
-        self.running = True # Same thing. Keep in mind, this will turn on the scheduled behaviour whenever a message is sent. Shouldn't really exist
+        
+        self.running = isRunning
 
 
 

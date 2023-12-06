@@ -27,15 +27,15 @@ class RennyTheLittleGuy:
         message = ""
 
         if sent_msg:
-            message = "User: "+sent_msg
+            message = "User: \n{\n\"mind\": \""+sent_msg+"\",\"talking-to\": \"Renny\"}"
 
         elif action == "begin": # The "begin" action is only given on the first run
             message = self.listFolders(path)
 
         elif action == "open-folder":
             print("He wants to open "+file)
-            path = path+"/"+file
-            message = self.listFolders(path+"/"+file)
+            path = path+"\\"+file
+            message = self.listFolders(path)
 
         elif action == "close-folder":
             print("He wants to open go back, close "+file)
@@ -43,7 +43,7 @@ class RennyTheLittleGuy:
 
         elif action == "open-file" or action =="keep-reading":
             if extension(file) == ".txt":
-                content,index, eof = read_txt(path+"/"+file,index)
+                content,index, eof = read_txt(path+"\\"+file,index)
                 act = "are" if action == "open-file" else "continue"
                 end = "> Keep reading or close file?" if not eof else "end of file."
                 message = f'You {act} reading "{file}"\n"{content}"\n{end}'
@@ -54,12 +54,13 @@ class RennyTheLittleGuy:
         elif action == "write-journal":
             print("He wants to write on his journal")
 
+        print("Getting data...")
         #response = chat(message)
-        print("Pretending to get data...")
-        time.sleep(5)
-        response = '{"mind": "Hellot here!!","open-folder": "Mis Cosas"}'
-        data = json.loads(response)
 
+        response='{ "mind":"Mmmhhh, odd","delete-file":"lole.jpg" }'
+
+        data = json.loads(response)
+        
         data["path"] = path
         data["index"] = index
         data["talking"] = False
@@ -78,15 +79,16 @@ class RennyTheLittleGuy:
 
             msg = f'You are at "{self.path}"\n'
 
-            msg += "Files:\n"
+            if files:
+                msg += "Files:\n"
 
-            for file in files[:20]:
-                msg += file + "\n"
+                for file in files[:20]:
+                    msg += file + "\n"
+            if folders:
+                msg += "Folders:\n"
 
-            msg += "Folders:\n"
-
-            for folder in folders[:20]:
-                msg += folder + "\n"
+                for folder in folders[:20]:
+                    msg += folder + "\n"
             
             msg += "> What will you do?"
         elif status == "not-found":
